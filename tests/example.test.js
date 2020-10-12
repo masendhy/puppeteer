@@ -275,22 +275,125 @@
 
 // Count the element
 
+// const puppeteer = require('puppeteer')
+
+// describe('First Puppeteer Test', () => {
+//     it('should launch the browser', async function () {
+//         const browser = await puppeteer.launch({
+//             headless: false,
+//             slowMo: 250,
+//             devtools: false
+//         })
+//         const page = await browser.newPage()
+//         await page.goto('http://example.com')
+//         const text = await page.$eval('h1', element => element.textContent)
+//         const count = await page.$$eval('p', element => element.length)
+
+//         console.log('Text in the H1 is : ' + text);
+//         console.log('Number of P tags on the page : ' + count);
+
+//         await browser.close()
+
+//     })
+// })
+//  ==================================================================================
+
+
+// Find Title - Find Url & Get element, Count the element with puppeteer ( use expect on chai)
+
+// const puppeteer = require('puppeteer')
+// const expect = require('chai').expect
+
+// describe('First Puppeteer Test', () => {
+//     it('should launch the browser', async function () {
+//         const browser = await puppeteer.launch({
+//             headless: true,
+//             slowMo: 10,
+//             devtools: false
+//         })
+//         const page = await browser.newPage()
+//         await page.goto('http://example.com')
+//         const title = await page.title()
+//         const url = await page.url()
+//         const text = await page.$eval('h1', element => element.textContent)
+//         const count = await page.$$eval('p', element => element.length)
+
+//         expect(title).to.be.a('string', 'Example Domain')
+//         expect(url).to.include('example.com')
+//         expect(text).to.be.a('string', 'Example Domain')
+//         expect(count).to.equal(2)
+//         await browser.close()
+
+//     })
+// })
+//  ==================================================================================
+
+
+// Default TIme Out
+
+// const puppeteer = require('puppeteer')
+// const expect = require('chai').expect
+
+// describe('First Puppeteer Test', () => {
+//     it('should launch the browser', async function () {
+//         const browser = await puppeteer.launch({
+//             headless: true,
+//             slowMo: 10,
+//             devtools: false
+//         })
+//         const page = await browser.newPage()
+//         await page.setDefaultTimeout(10000)
+//         await page.setDefaultNavigationTimeout(20000)
+//         await page.goto('http://example.com')
+//         const title = await page.title()
+//         const url = await page.url()
+//         const text = await page.$eval('h1', element => element.textContent)
+//         const count = await page.$$eval('p', element => element.length)
+
+//         expect(title).to.be.a('string', 'Example Domain')
+//         expect(url).to.include('example.com')
+//         expect(text).to.be.a('string', 'Example Domain')
+//         expect(count).to.equal(2)
+//         await browser.close()
+
+//     })
+// })
+//  ==================================================================================
+
+
+// Keyboard press simulation
+
 const puppeteer = require('puppeteer')
+const expect = require('chai').expect
 
 describe('First Puppeteer Test', () => {
     it('should launch the browser', async function () {
         const browser = await puppeteer.launch({
             headless: false,
-            slowMo: 250,
+            slowMo: 10,
             devtools: false
         })
         const page = await browser.newPage()
+        await page.setDefaultTimeout(10000)
+        await page.setDefaultNavigationTimeout(20000)
         await page.goto('http://example.com')
+        const title = await page.title()
+        const url = await page.url()
         const text = await page.$eval('h1', element => element.textContent)
         const count = await page.$$eval('p', element => element.length)
 
-        console.log('Text in the H1 is : ' + text);
-        console.log('Number of P tags on the page : ' + count);
+        expect(title).to.be.a('string', 'Example Domain')
+        expect(url).to.include('example.com')
+        expect(text).to.be.a('string', 'Example Domain')
+        expect(count).to.equal(2)
+
+        await page.goto('http://zero.webappsecurity.com')
+        await page.waitForSelector('#searchTerm')
+        await page.type('#searchTerm', 'Transfer')
+        await page.keyboard.press('Enter', {
+            delay: 10
+        })
+        await page.waitFor(5000)
 
         await browser.close()
 
