@@ -451,6 +451,19 @@
 const puppeteer = require('puppeteer')
 const expect = require('chai').expect
 
+const {
+    click,
+    getText,
+    getCount,
+    shouldNotExist,
+} = require('../lib/helpers')
+// const {
+//     getText
+// } = require('../lib/helpers')
+// const {
+//     getCount
+// } = require('../lib/helpers')
+
 describe('First Puppeteer Test', () => {
     let browser
     let page
@@ -491,8 +504,10 @@ describe('First Puppeteer Test', () => {
         await page.waitForXPath('//h1')
         const title = await page.title()
         const url = await page.url()
-        const text = await page.$eval('h1', element => element.textContent)
-        const count = await page.$$eval('p', element => element.length)
+        // const text = await page.$eval('h1', element => element.textContent)
+        // const count = await page.$$eval('p', element => element.length)
+        const text = await getText(page, 'h1')
+        const count = await getCount(page, 'p')
 
         expect(title).to.be.a('string', 'Example Domain')
         expect(url).to.include('example.com')
@@ -500,14 +515,15 @@ describe('First Puppeteer Test', () => {
         expect(count).to.equal(2)
 
         await page.goto('http://zero.webappsecurity.com')
-        await page.waitForSelector('#signin_button')
-        await page.click('#signin_button')
-        await page.waitFor(() => !document.querySelector('#signin_button'))
-        await page.waitForSelector('#signin_button', {
-            hidden: true,
-            timeout: 3000,
-        })
-
+        // await page.waitForSelector('#signin_button')
+        // await page.click('#signin_button')
+        await click(page, '#signin_button')
+        // await page.waitFor(() => !document.querySelector('#signin_button'))
+        // await page.waitForSelector('#signin_button', {
+        //     hidden: true,
+        //     timeout: 3000,
+        // })
+        await shouldNotExist(page, '#signin_button')
         // await browser.close()
 
     })
